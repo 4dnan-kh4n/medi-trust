@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Euclid Circular A", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "MongoDB Value Serif", "DM Serif Display", Georgia, serif;
+  --color-ink: #09234a;
+  --color-forest: #1768d8;
+  --color-mint: #dff4ff;
+  --color-canvas: #f6f9ff;
+  --color-sand: #eaf0fb;
+  --color-line: #cad8ed;
+  --color-muted: #526783;
+  --color-coral: #f47b61;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: #f6f9ff; color: #09234a; font-family: "Euclid Circular A", "Manrope", ui-sans-serif, system-ui, sans-serif; }
+* { box-sizing: border-box; }
+button, a { -webkit-tap-highlight-color: transparent; }
+::selection { background: #b8d9ff; color: #09234a; }
+
+@keyframes hero-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(0, -13px, 0) rotate(2deg); }
+}
+
+.hero-art { animation: hero-float 7s ease-in-out infinite; }
+
+.interactive-card {
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease, background-color 260ms ease;
+}
+
+.interactive-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--color-forest) 45%, var(--color-line));
+  box-shadow: 0 22px 45px rgba(9, 35, 74, 0.12);
+}
+
+.visual-frame img {
+  transition: transform 550ms cubic-bezier(0.22, 1, 0.36, 1), filter 300ms ease;
+}
+
+.visual-frame:hover img { transform: scale(1.05) rotate(1deg); filter: saturate(1.08); }
+
+.nav-link { position: relative; }
+.nav-link::after { background: currentColor; bottom: -5px; content: ''; height: 1.5px; left: 0; position: absolute; transform: scaleX(0); transform-origin: right; transition: transform 220ms ease; width: 100%; }
+.nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art { animation: none; }
+  .interactive-card, .visual-frame img { transition: none; }
+  .interactive-card:hover, .visual-frame:hover img { transform: none; }
+}
