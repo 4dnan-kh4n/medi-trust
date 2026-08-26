@@ -3,22 +3,16 @@ services:
     name: meditrust-api
     runtime: docker
     region: singapore
-    plan: starter
+    plan: free
     dockerfilePath: ./server/Dockerfile
     dockerContext: ./server
     healthCheckPath: /api/health
     initialDeployHook: npm run seed:admin
-    disk:
-      name: doctor-images
-      mountPath: /app/uploads
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: "5000"
-      - key: UPLOAD_DIR
-        value: /app/uploads
       - key: MONGODB_URI
         sync: false
       - key: CLIENT_URL
@@ -33,6 +27,12 @@ services:
         sync: false
       - key: OPENAI_GUIDANCE_MODEL
         value: gpt-5.4-mini
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
 
   - type: web
     name: meditrust-web

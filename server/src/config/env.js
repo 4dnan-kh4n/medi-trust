@@ -13,10 +13,16 @@ const environmentSchema = z.object({
   INITIAL_ADMIN_PASSWORD: z.string().min(8).optional(),
   OPENAI_API_KEY: z.string().min(20).optional(),
   OPENAI_GUIDANCE_MODEL: z.string().min(3).default('gpt-5.4-mini'),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  CLOUDINARY_API_KEY: z.string().min(1).optional(),
+  CLOUDINARY_API_SECRET: z.string().min(1).optional(),
   UPLOAD_DIR: z.string().min(1).optional(),
 }).superRefine((value, context) => {
+  const cloudinaryKeys = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
+  const cloudinaryConfigured = cloudinaryKeys.every((key) => value[key])
+  if (cloudinaryKeys.some((key) => value[key]) && !cloudinaryConfigured) for (const key of cloudinaryKeys) if (!value[key]) context.addIssue({ code: z.ZodIssueCode.custom, path: [key], message: `${key} is required when Cloudinary is configured.` })
   if (value.NODE_ENV !== 'production') return
-  for (const key of ['MONGODB_URI', 'JWT_SECRET']) if (!value[key]) context.addIssue({ code: z.ZodIssueCode.custom, path: [key], message: `${key} is required in production.` })
+  for (const key of ['MONGODB_URI', 'JWT_SECRET', ...cloudinaryKeys]) if (!value[key]) context.addIssue({ code: z.ZodIssueCode.custom, path: [key], message: `${key} is required in production.` })
 })
 
 const result = environmentSchema.safeParse(process.env)

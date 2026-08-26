@@ -8,7 +8,7 @@ const mediaBase = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').
 function DoctorAvatar({ doctor }) {
   const [failed, setFailed] = useState(false)
   const initials = doctor.fullName.split(' ').filter(Boolean).slice(1, 3).map((word) => word[0]).join('')
-  const image = doctor.profileImageUrl?.startsWith('/uploads/') ? `${mediaBase}${doctor.profileImageUrl}` : ''
+  const image = doctor.profileImageUrl ? (doctor.profileImageUrl.startsWith('/uploads/') ? `${mediaBase}${doctor.profileImageUrl}` : doctor.profileImageUrl) : ''
   if (!image || failed) return <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-mint text-sm font-extrabold text-forest">{initials}</div>
   return <img src={image} alt={`Portrait of ${doctor.fullName}`} onError={() => setFailed(true)} className="size-14 shrink-0 rounded-2xl object-cover" />
 }

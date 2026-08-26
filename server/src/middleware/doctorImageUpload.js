@@ -1,4 +1,5 @@
 import { mkdirSync } from 'node:fs'
+import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { randomUUID } from 'node:crypto'
@@ -10,17 +11,18 @@ const directory = env.UPLOAD_DIR ? path.resolve(env.UPLOAD_DIR, 'doctor-images')
 mkdirSync(directory, { recursive: true })
 
 const extensions = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' }
-const storage = multer.diskStorage({
-  destination: (_request, _file, done) => done(null, directory),
-  filename: (_request, file, done) => done(null, `${randomUUID()}${extensions[file.mimetype]}`),
-})
-
 export const doctorImageDirectory = directory
 export const doctorImageUpload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024, files: 1 },
   fileFilter: (_request, file, done) => {
     if (!extensions[file.mimetype]) return done(new AppError('Upload a JPG, PNG, or WebP image.', 400))
     done(null, true)
   },
 })
+
+export async function saveDoctorImageLocally(file) {
+  const filename = `${randomUUID()}${extensions[file.mimetype]}`
+  await writeFile(path.join(directory, filename), file.buffer)
+  return { profileImageUrl: `/uploads/doctor-images/${filename}` }
+}

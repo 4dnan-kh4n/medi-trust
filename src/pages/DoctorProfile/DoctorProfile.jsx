@@ -18,7 +18,7 @@ function practiceView(item, type) {
 
 function ProfilePortrait({ doctor, initials }) {
   const [failed, setFailed] = useState(false)
-  const image = doctor.profileImageUrl?.startsWith('/uploads/') ? `${mediaBase}${doctor.profileImageUrl}` : ''
+  const image = doctor.profileImageUrl ? (doctor.profileImageUrl.startsWith('/uploads/') ? `${mediaBase}${doctor.profileImageUrl}` : doctor.profileImageUrl) : ''
   if (!image || failed) return <div className="grid size-20 shrink-0 place-items-center rounded-3xl bg-mint text-xl font-extrabold text-forest">{initials}</div>
   return <img src={image} alt={`Portrait of ${doctor.fullName}`} onError={() => setFailed(true)} className="size-20 shrink-0 rounded-3xl object-cover" />
 }

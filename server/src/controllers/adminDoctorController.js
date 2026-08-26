@@ -1,13 +1,11 @@
 import { z } from 'zod'
-import { unlink } from 'node:fs/promises'
-import path from 'node:path'
 import Doctor, { appointmentMethods } from '../models/Doctor.js'
 import Clinic from '../models/Clinic.js'
 import Hospital from '../models/Hospital.js'
 import Location from '../models/Location.js'
 import Speciality from '../models/Speciality.js'
 import AppError from '../utils/AppError.js'
-import { doctorImageDirectory } from '../middleware/doctorImageUpload.js'
+import { removeDoctorImage, saveDoctorImage } from '../services/doctorImageStorage.js'
 
 const objectId = z.string().regex(/^[a-f\d]{24}$/i)
 const time = z.string().regex(/^\d{2}:\d{2}$/)
@@ -21,4 +19,4 @@ export async function getAdminDoctor(request, response) { const doctor = await D
 export async function createAdminDoctor(request, response) { const parsed = doctorInput.safeParse(request.body); if (!parsed.success) throw new AppError('Invalid doctor details.', 400, parsed.error.flatten().fieldErrors); const doctor = await Doctor.create({ ...parsed.data, isFictional: false }); response.status(201).json({ data: doctor }) }
 export async function updateAdminDoctor(request, response) { const parsed = doctorInput.partial().safeParse(request.body); if (!parsed.success) throw new AppError('Invalid doctor details.', 400, parsed.error.flatten().fieldErrors); const doctor = await Doctor.findByIdAndUpdate(request.params.id, parsed.data, { new: true, runValidators: true }); if (!doctor) throw new AppError('Doctor not found.', 404); response.json({ data: doctor }) }
 export async function toggleAdminDoctor(request, response) { const parsed = z.object({ isActive: z.boolean() }).safeParse(request.body); if (!parsed.success) throw new AppError('isActive must be true or false.', 400); const doctor = await Doctor.findByIdAndUpdate(request.params.id, parsed.data, { new: true }); if (!doctor) throw new AppError('Doctor not found.', 404); response.json({ data: doctor }) }
-export async function uploadAdminDoctorImage(request, response) { const doctor = await Doctor.findById(request.params.id); if (!doctor) throw new AppError('Doctor not found.', 404); if (!request.file) throw new AppError('Select an image to upload.', 400); const previous = doctor.profileImageUrl; doctor.profileImageUrl = `/uploads/doctor-images/${request.file.filename}`; await doctor.save(); if (previous?.startsWith('/uploads/doctor-images/')) unlink(path.join(doctorImageDirectory, path.basename(previous))).catch(() => {}); response.status(201).json({ data: { profileImageUrl: doctor.profileImageUrl } }) }
+export async function uploadAdminDoctorImage(request, response) { const doctor = await Doctor.findById(request.params.id); if (!doctor) throw new AppError('Doctor not found.', 404); if (!request.file) throw new AppError('Select an image to upload.', 400); const previousUrl = doctor.profileImageUrl; const previousPublicId = doctor.profileImagePublicId; const uploaded = await saveDoctorImage(request.file); doctor.profileImageUrl = uploaded.profileImageUrl; doctor.profileImagePublicId = uploaded.profileImagePublicId; try { await doctor.save() } catch (error) { await removeDoctorImage(uploaded.profileImageUrl, uploaded.profileImagePublicId); throw error } if (previousUrl && previousUrl !== uploaded.profileImageUrl) removeDoctorImage(previousUrl, previousPublicId).catch(() => {}); response.status(201).json({ data: { profileImageUrl: doctor.profileImageUrl } }) }

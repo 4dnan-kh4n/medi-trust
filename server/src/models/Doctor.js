@@ -10,6 +10,7 @@ const doctorSchema = new mongoose.Schema({
   fullName: { type: String, required: true, trim: true, maxlength: 140 },
   slug: { type: String, required: true, trim: true, unique: true, lowercase: true, match: /^[a-z0-9-]+$/ },
   profileImageUrl: { type: String, trim: true, maxlength: 500 },
+  profileImagePublicId: { type: String, trim: true, maxlength: 300 },
   primaryLocation: { type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true, index: true },
   primarySpeciality: { type: mongoose.Schema.Types.ObjectId, ref: 'Speciality', required: true, index: true },
   additionalSpecialities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Speciality' }],
