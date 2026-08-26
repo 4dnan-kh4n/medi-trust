@@ -13,7 +13,7 @@ function Hero() {
           <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Link to="/explore" className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-bold text-white ring-1 ring-coral/70 transition hover:bg-coral focus:outline-none focus:ring-2 focus:ring-coral focus:ring-offset-2">Explore doctors <ArrowRight size={17} aria-hidden="true" /></Link><Link to="/speciality-guide" className="inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white px-6 py-3.5 text-sm font-bold text-ink transition hover:border-coral hover:text-coral focus:outline-none focus:ring-2 focus:ring-coral focus:ring-offset-2"><Sparkles size={17} aria-hidden="true" /> Which doctor should I consult?</Link></div>
           <p className="mt-5 text-xs leading-5 text-muted">Speciality guidance helps with navigation only. It is not a diagnosis or treatment advice.</p>
         </div>
-        <div className="relative self-center lg:pl-8"><div className="absolute inset-8 rounded-full bg-forest/10 blur-3xl" aria-hidden="true" /><img src={heroArt} alt="Abstract 3D medical location marker" className="hero-art relative mx-auto w-full max-w-[13rem] drop-shadow-[0_28px_30px_rgba(23,104,216,0.22)] sm:max-w-sm lg:max-w-md" /></div>
+        <div className="relative hidden self-center sm:block lg:pl-8"><div className="absolute inset-8 rounded-full bg-forest/10 blur-3xl" aria-hidden="true" /><img src={heroArt} alt="Abstract 3D medical location marker" className="hero-art relative mx-auto w-full max-w-[13rem] drop-shadow-[0_28px_30px_rgba(23,104,216,0.22)] sm:max-w-sm lg:max-w-md" /></div>
       </div>
     </section>
   )
