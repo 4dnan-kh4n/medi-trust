@@ -1,0 +1,22 @@
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
+
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api', withCredentials: true })
+const blank = { name: '', location: '', address: '', locality: '', pinCode: '', phoneNumbers: '', mapUrl: '', websiteUrl: '' }
+
+export default function AdminFacilityForm() {
+  const { type, id } = useParams()
+  const isHospital = type === 'hospitals'
+  const name = isHospital ? 'hospital' : 'clinic'
+  const [form, setForm] = useState(blank)
+  const [locations, setLocations] = useState(null)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
+  const set = (key, value) => setForm((current) => ({ ...current, [key]: value }))
+
+  useEffect(() => { Promise.all([api.get('/admin/directory/options'), id ? api.get(`/admin/directory/facilities/${type}/${id}`) : Promise.resolve(null)]).then(([options, item]) => { setLocations(options.data.data.locations); if (item) { const data = item.data.data; setForm({ name: data.name, location: data.location?._id || '', address: data.address, locality: data.locality, pinCode: data.pinCode || '', phoneNumbers: data.phoneNumbers.join(', '), mapUrl: data.mapUrl || '', websiteUrl: data.websiteUrl || '' }) } }).catch(() => navigate('/admin/login')) }, [id, navigate, type])
+  async function submit(event) { event.preventDefault(); setError(''); const body = { ...form, phoneNumbers: form.phoneNumbers.split(',').map((value) => value.trim()).filter(Boolean) }; try { await (id ? api.patch(`/admin/directory/facilities/${type}/${id}`, body) : api.post(`/admin/directory/facilities/${type}`, body)); navigate(`/admin/facilities/${type}`) } catch (requestError) { setError(requestError.response?.data?.error?.message || `Could not save ${name}.`) } }
+  if (!locations) return <main className="grid min-h-screen place-items-center bg-canvas">Loading form…</main>
+  return <main className="min-h-screen bg-canvas px-5 py-8"><form onSubmit={submit} className="mx-auto grid max-w-3xl gap-5"><Link to={`/admin/facilities/${type}`} className="text-sm font-bold text-forest">← {isHospital ? 'Hospitals' : 'Clinics'}</Link><h1 className="font-display text-5xl text-ink">{id ? `Edit ${name}` : `Add ${name}`}</h1><div className="grid gap-4 rounded-2xl border border-line bg-white p-5 sm:grid-cols-2"><label className="grid gap-1 font-bold">Name<input required value={form.name} onChange={(event) => set('name', event.target.value)} className="rounded-xl border border-line p-3 font-normal" /></label><label className="grid gap-1 font-bold">Location<select required value={form.location} onChange={(event) => set('location', event.target.value)} className="rounded-xl border border-line p-3 font-normal"><option value="">Select location</option>{locations.map((location) => <option key={location._id} value={location._id}>{location.city}, {location.state}</option>)}</select></label><label className="grid gap-1 font-bold sm:col-span-2">Address<input required value={form.address} onChange={(event) => set('address', event.target.value)} className="rounded-xl border border-line p-3 font-normal" /></label><label className="grid gap-1 font-bold">Locality<input required value={form.locality} onChange={(event) => set('locality', event.target.value)} className="rounded-xl border border-line p-3 font-normal" /></label><label className="grid gap-1 font-bold">PIN code<input inputMode="numeric" maxLength="6" value={form.pinCode} onChange={(event) => set('pinCode', event.target.value)} className="rounded-xl border border-line p-3 font-normal" /></label><label className="grid gap-1 font-bold">Phone numbers (comma separated)<input value={form.phoneNumbers} onChange={(event) => set('phoneNumbers', event.target.value)} className="rounded-xl border border-line p-3 font-normal" /></label><label className="grid gap-1 font-bold">Map URL<input value={form.mapUrl} onChange={(event) => set('mapUrl', event.target.value)} className="rounded-xl border border-line p-3 font-normal" /></label>{isHospital && <label className="grid gap-1 font-bold sm:col-span-2">Website URL<input value={form.websiteUrl} onChange={(event) => set('websiteUrl', event.target.value)} className="rounded-xl border border-line p-3 font-normal" /></label>}</div>{error && <p className="rounded-xl bg-coral/10 p-3 text-coral">{error}</p>}<button className="w-fit rounded-full bg-ink px-6 py-3 font-bold text-white">Save {name}</button></form></main>
+}

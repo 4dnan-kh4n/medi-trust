@@ -1,0 +1,6 @@
+Internal sources used in this presentation:
+- mediTrust brand colours and copy direction from src/index.css.
+- mediTrust product images from src/assets/.
+- Product capabilities represented from the current frontend and backend implementation.
+
+No external images, statistics, customer claims, or third-party research are used.
