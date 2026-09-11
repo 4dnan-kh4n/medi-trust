@@ -16,7 +16,7 @@ function SpecialityGuide({ onChoose }) {
   }
 
   return (
-    <div className="border-y border-line py-6">
+    <div className="speciality-guide">
       <form onSubmit={handleSubmit}>
         <label className="grid gap-2 text-sm font-bold text-ink" htmlFor="health-concern">Describe your concern in your own words</label>
         <textarea id="health-concern" value={concern} onChange={(event) => setConcern(event.target.value)} placeholder="For example: I have had a skin rash and itching for the last few days." maxLength={600} rows={5} className="mt-2 w-full resize-y rounded-xl border border-line bg-white px-4 py-3 text-sm leading-6 text-ink outline-none transition placeholder:text-muted/70 focus:border-forest focus:ring-2 focus:ring-forest/15" />

@@ -3,7 +3,6 @@ import Home from './pages/Home/Home'
 import DoctorProfile from './pages/DoctorProfile/DoctorProfile'
 import ExploreDoctors from './pages/ExploreDoctors/ExploreDoctors'
 import PhasePreview from './pages/PhasePreview'
-import SmoothScroll from './components/common/SmoothScroll'
 import ScrollToTop from './components/common/ScrollToTop'
 import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
@@ -26,7 +25,6 @@ function CitySpecialityPage() {
 function App() {
   return (
     <>
-      <SmoothScroll />
       <ScrollToTop />
       <Routes>
       <Route path="/" element={<Home />} />

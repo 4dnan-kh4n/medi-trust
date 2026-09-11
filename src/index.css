@@ -1,24 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Euclid Circular A", "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "MongoDB Value Serif", "DM Serif Display", Georgia, serif;
-  --color-ink: #09234a;
-  --color-forest: #1768d8;
-  --color-mint: #dff4ff;
-  --color-canvas: #f6f9ff;
-  --color-sand: #eaf0fb;
-  --color-line: #cad8ed;
-  --color-muted: #526783;
-  --color-coral: #f47b61;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #29252a;
+  --color-forest: #c94a32;
+  --color-mint: #ffe5dd;
+  --color-canvas: #f4f0eb;
+  --color-sand: #ece4dd;
+  --color-line: #d7cfc5;
+  --color-muted: #615b5f;
+  --color-coral: #ff7a5c;
 }
 
-html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; background: #f6f9ff; color: #09234a; font-family: "Euclid Circular A", "Manrope", ui-sans-serif, system-ui, sans-serif; }
+html { scroll-behavior: auto; }
+body { margin: 0; min-width: 320px; background: #f4f0eb; color: #29252a; font-family: "Euclid Circular A", "Manrope", ui-sans-serif, system-ui, sans-serif; }
 * { box-sizing: border-box; }
 button, a { -webkit-tap-highlight-color: transparent; }
-::selection { background: #b8d9ff; color: #09234a; }
+::selection { background: #ffb29f; color: #29252a; }
 
 @keyframes hero-float {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
@@ -34,7 +34,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .interactive-card:hover {
   transform: translateY(-6px);
   border-color: color-mix(in srgb, var(--color-forest) 45%, var(--color-line));
-  box-shadow: 0 22px 45px rgba(9, 35, 74, 0.12);
+  box-shadow: 0 22px 45px rgba(67, 48, 34, 0.12);
 }
 
 .visual-frame img {

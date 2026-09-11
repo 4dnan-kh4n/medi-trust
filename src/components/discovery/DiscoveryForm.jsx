@@ -17,7 +17,7 @@ function DiscoveryForm({ values, onChange, onSubmit, locations, specialities, su
   const canSubmit = Boolean(values.query || (values.state && values.city && values.speciality))
 
   return (
-    <form onSubmit={onSubmit} className="border-y border-line py-6">
+    <form onSubmit={onSubmit} className="discovery-form">
       <label className="grid gap-2 text-sm font-bold text-ink">Search directly <span className="font-normal text-muted">(doctor name or care need)</span><input value={values.query} onChange={(event) => onChange({ query: event.target.value })} maxLength="80" placeholder="e.g. Dr. Khan, skin doctor, heart specialist" className="h-12 w-full rounded-xl border border-line bg-white px-3 text-sm font-medium text-ink outline-none transition placeholder:text-muted/70 focus:border-forest focus:ring-2 focus:ring-forest/15" /></label>
       <p className="mt-4 text-xs font-bold uppercase tracking-[0.12em] text-muted">or refine by location and speciality</p>
       <div className="grid gap-4 md:grid-cols-3">

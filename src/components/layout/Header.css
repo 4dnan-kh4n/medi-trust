@@ -1,0 +1,14 @@
+.main-header { background:#050507; color:#f1f0f4; border-bottom:1px solid rgba(255,255,255,.12); font-family:Manrope,Arial,sans-serif; }
+.header-brand { display:inline-flex; align-items:center; gap:10px; flex-shrink:0; font-size:19px; font-weight:800; letter-spacing:-.05em; }
+.header-brand-mark { position:relative; width:20px; height:20px; background:#ff7a5c; border-radius:7px 7px 7px 2px; transform:rotate(-8deg); }
+.header-brand-mark::after { content:''; position:absolute; inset:6px; background:#050507; }
+.header-link { color:#9693a1; font-size:13px; font-weight:600; transition:color .2s; white-space:nowrap; }
+.header-link:hover { color:#f1f0f4; }
+.header-cta { align-items:center; justify-content:center; gap:12px; padding:12px 19px; border-radius:999px; background:#ff7a5c; color:#21110e; font-size:13px; font-weight:800; white-space:nowrap; transition:background .2s,transform .2s; }
+.header-cta:hover { background:#ffaa92; transform:translateY(-2px); }
+.header-toggle:hover { background:#18161d; }
+.header-mobile { background:#111015; border-top:1px solid rgba(255,255,255,.12); max-height:calc(100dvh - 76px); overflow-y:auto; }
+.header-mobile-link { padding:12px; border-radius:10px; color:#f1f0f4; font-size:15px; font-weight:600; }
+.header-mobile-link:hover { background:#18161d; color:#ffaa92; }
+.main-header :is(a,button):focus-visible { outline:2px solid #ff7a5c; outline-offset:4px; }
+@media (prefers-reduced-motion:reduce) { .main-header * { transition:none; } .header-cta:hover { transform:none; } }
